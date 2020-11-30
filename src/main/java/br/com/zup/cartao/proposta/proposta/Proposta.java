@@ -40,22 +40,28 @@ public class Proposta {
     @Positive
     private BigDecimal salario;
 
+    @Enumerated(EnumType.STRING)
+    private PropostaSituacao propostaSituacao = PropostaSituacao.NAO_ELEGIVEL;
+
 
     @Deprecated
     private Proposta() {
 
     }
 
-    public Proposta(@NotBlank(message = "documento é um campo de preenchimento obrigatório.") String documento,
+    public Proposta( @NotBlank(message = "documento é um campo de preenchimento obrigatório.") String documento,
                     @NotBlank(message = "email é um campo de preenchimento obrigatório.") @Email String email,
                     @NotBlank(message = "nome é um campo de preenchimento obrigatório.") String nome,
                     @NotBlank(message = "endereco é um campo de preenchimento obrigatório.") String endereco,
-                    @NotNull(message = "salário é um campo de preenchimento obrigatório.") @Positive BigDecimal salario) {
+                    @NotNull(message = "salário é um campo de preenchimento obrigatório.") @Positive BigDecimal salario,
+                    @NotNull PropostaSituacao propostaSituacao) {
+        this.id = id;
         this.documento = documento;
         this.email = email;
         this.nome = nome;
         this.endereco = endereco;
         this.salario = salario;
+        this.propostaSituacao = propostaSituacao;
     }
 
     public Long getId() {

@@ -16,7 +16,7 @@ public class PropostaRepositoryTest {
 
     @Test
     public void insereComDocumentoNulo() {
-        Proposta proposta = new Proposta(null, "lucas@zup.com.br", "lucas", "rua 2", BigDecimal.valueOf(1000.00));
+        Proposta proposta = new Proposta(null, "lucas@zup.com.br", "lucas", "rua 2", BigDecimal.valueOf(1000.00), PropostaSituacao.ELEGIVEL);
         try {
             propostaRepository.save(proposta);
         }catch(Exception e) {
@@ -26,7 +26,7 @@ public class PropostaRepositoryTest {
 
     @Test
     public void insereComEmailNulo() {
-        Proposta proposta = new Proposta("516.170.390-39", null, "lucas", "rua 2", BigDecimal.valueOf(1000.00));
+        Proposta proposta = new Proposta("516.170.390-39", null, "lucas", "rua 2", BigDecimal.valueOf(1000.00), PropostaSituacao.ELEGIVEL);
         try {
             propostaRepository.save(proposta);
         }catch(Exception e) {
@@ -36,7 +36,7 @@ public class PropostaRepositoryTest {
 
     @Test
     public void insereComNomeNulo() {
-        Proposta proposta = new Proposta("516.170.390-39", "lucas@zup.com.br", null, "rua 2", BigDecimal.valueOf(1000.00));
+        Proposta proposta = new Proposta("516.170.390-39", "lucas@zup.com.br", null, "rua 2", BigDecimal.valueOf(1000.00), PropostaSituacao.ELEGIVEL);
         try {
             propostaRepository.save(proposta);
         }catch(Exception e) {
@@ -46,7 +46,7 @@ public class PropostaRepositoryTest {
 
     @Test
     public void insereComEnderecoNulo() {
-        Proposta proposta = new Proposta("516.170.390-39", "lucas@zup.com.br", "lucas", null, BigDecimal.valueOf(1000.00));
+        Proposta proposta = new Proposta("516.170.390-39", "lucas@zup.com.br", "lucas", null, BigDecimal.valueOf(1000.00), PropostaSituacao.ELEGIVEL);
         try {
             propostaRepository.save(proposta);
         }catch(Exception e) {
@@ -56,7 +56,7 @@ public class PropostaRepositoryTest {
 
     @Test
     public void insereComSalarioNulo() {
-        Proposta proposta = new Proposta("516.170.390-39", "lucas@zup.com.br", "lucas", "rua 2", null);
+        Proposta proposta = new Proposta("516.170.390-39", "lucas@zup.com.br", "lucas", "rua 2", null, PropostaSituacao.ELEGIVEL);
         try {
             propostaRepository.save(proposta);
         }catch(Exception e) {
@@ -66,7 +66,7 @@ public class PropostaRepositoryTest {
 
     @Test
     public void insereComSalarioZerado() {
-        Proposta proposta = new Proposta("516.170.390-39", "lucas@zup.com.br", "lucas", "rua 2", BigDecimal.valueOf(0));
+        Proposta proposta = new Proposta("516.170.390-39", "lucas@zup.com.br", "lucas", "rua 2", BigDecimal.valueOf(0), PropostaSituacao.ELEGIVEL);
         try {
             propostaRepository.save(proposta);
         }catch(Exception e) {
@@ -76,7 +76,7 @@ public class PropostaRepositoryTest {
 
     @Test
     public void insereComSalarioNegativo() {
-        Proposta proposta = new Proposta("516.170.390-39", "lucas@zup.com.br", "lucas", "rua 2", BigDecimal.valueOf(-1));
+        Proposta proposta = new Proposta("516.170.390-39", "lucas@zup.com.br", "lucas", "rua 2", BigDecimal.valueOf(-1), PropostaSituacao.ELEGIVEL);
         try {
             propostaRepository.save(proposta);
         }catch(Exception e) {
