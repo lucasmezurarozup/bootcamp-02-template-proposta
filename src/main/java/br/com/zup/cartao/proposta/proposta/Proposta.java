@@ -12,7 +12,10 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(
-        name = "propostas"
+        name = "propostas",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"documento"}, name = "documento")
+        }
 )
 public class Proposta {
 
