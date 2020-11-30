@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: "CartaoCreditoProposta"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/keycloak
+    username: "keycloak"
+    password: "password"
+    jpa:
+      show-sql: false
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQL9Dialect
+      hibernate:
+        ddl-auto: update
