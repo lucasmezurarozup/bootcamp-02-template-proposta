@@ -23,9 +23,9 @@ public class PropostaControllerTest {
 
 
     @Test
-    public void testandoExistenciaRotaProposta() throws Exception {
-        mockMvc.perform(post("/")
+    public void testandoExistenciaRotaPropostaSemCamposPreenchidos() throws Exception {
+        mockMvc.perform(post("/propostas/nova")
         .contentType(MediaType.APPLICATION_JSON))
-        .andExpect(status().isNotFound());
+        .andExpect(status().isBadRequest());
     }
 }
