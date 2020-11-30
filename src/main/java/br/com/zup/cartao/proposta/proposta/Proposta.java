@@ -55,6 +55,10 @@ public class Proposta {
         this.salario = salario;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getDocumento() {
         return documento;
     }
