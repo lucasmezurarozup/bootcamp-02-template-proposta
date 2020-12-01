@@ -11,10 +11,7 @@ import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -43,9 +40,9 @@ public class PropostaController {
                                 novaPropostaRequest.getDocumento(),
                                 novaPropostaRequest.getNome(),
                                 null)
-                        );
+                );
 
-        PropostaSituacao elegibilidadeProposta =
+        PropostaElegibilidade elegibilidadeProposta =
                 verificaElegibilidade(resultadoSolicitacaoAnaliseCliente);
 
         Proposta proposta = propostaRepository.save(
@@ -61,14 +58,21 @@ public class PropostaController {
         return ResponseEntity.created(location).build();
     }
 
-    public PropostaSituacao verificaElegibilidade(ResultadoSolicitacaoAnaliseCliente resultadoSolicitacaoAnaliseCliente) {
-        PropostaSituacao propostaSituacao;
-        if(resultadoSolicitacaoAnaliseCliente.getResultadoSolicitacao() == "COM_RESTRICAO"){
-            propostaSituacao = PropostaSituacao.NAO_ELEGIVEL;
-        }else {
-            propostaSituacao = PropostaSituacao.ELEGIVEL;
+    public PropostaElegibilidade verificaElegibilidade(ResultadoSolicitacaoAnaliseCliente resultadoSolicitacaoAnaliseCliente) {
+        PropostaElegibilidade propostaElegibilidade;
+        if (resultadoSolicitacaoAnaliseCliente.getResultadoSolicitacao() == "COM_RESTRICAO") {
+            propostaElegibilidade = PropostaElegibilidade.NAO_ELEGIVEL;
+        } else {
+            propostaElegibilidade = PropostaElegibilidade.ELEGIVEL;
         }
 
-        return propostaSituacao;
+        return propostaElegibilidade;
+    }
+
+    @GetMapping("/acompanhamento/{id}")
+    public ResponseEntity<?> detalhesProposta(@PathVariable("id") Long id) {
+        Proposta proposta = this.propostaRepository.findById(id).orElseThrow();
+        AcompanhamentoPropostaResponse acompanhamentoPropostaResponse = new AcompanhamentoPropostaResponse(proposta);
+        return ResponseEntity.ok(acompanhamentoPropostaResponse);
     }
 }

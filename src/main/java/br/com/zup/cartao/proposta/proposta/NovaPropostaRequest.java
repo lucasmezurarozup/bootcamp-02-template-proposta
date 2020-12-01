@@ -76,7 +76,7 @@ public class NovaPropostaRequest {
       return cpfValidator.isValid(documento, null) || cnpjValidator.isValid(documento, null);
    }
 
-   public Proposta toModel(PropostaSituacao propostaSituacao) {
-       return new Proposta(this.documento, this.email, this.nome, this.endereco, this.salario, propostaSituacao);
+   public Proposta toModel(PropostaElegibilidade propostaElegibilidade) {
+       return new Proposta(this.documento, this.email, this.nome, this.endereco, this.salario, propostaElegibilidade);
    }
 }

@@ -41,7 +41,10 @@ public class Proposta {
     private BigDecimal salario;
 
     @Enumerated(EnumType.STRING)
-    private PropostaSituacao propostaSituacao = PropostaSituacao.NAO_ELEGIVEL;
+    private PropostaElegibilidade propostaElegibilidade;
+
+    @Enumerated(EnumType.STRING)
+    private PropostaSituacao propostaSituacao = PropostaSituacao.INICIADA;
 
 
     @Deprecated
@@ -54,14 +57,13 @@ public class Proposta {
                     @NotBlank(message = "nome é um campo de preenchimento obrigatório.") String nome,
                     @NotBlank(message = "endereco é um campo de preenchimento obrigatório.") String endereco,
                     @NotNull(message = "salário é um campo de preenchimento obrigatório.") @Positive BigDecimal salario,
-                    @NotNull PropostaSituacao propostaSituacao) {
-        this.id = id;
+                    @NotNull PropostaElegibilidade propostaElegibilidade) {
         this.documento = documento;
         this.email = email;
         this.nome = nome;
         this.endereco = endereco;
         this.salario = salario;
-        this.propostaSituacao = propostaSituacao;
+        this.propostaElegibilidade = propostaElegibilidade;
     }
 
     public Long getId() {
@@ -86,5 +88,13 @@ public class Proposta {
 
     public BigDecimal getSalario() {
         return salario;
+    }
+
+    public PropostaSituacao getPropostaSituacao() {
+        return propostaSituacao;
+    }
+
+    public PropostaElegibilidade getPropostaElegibilidade() {
+        return propostaElegibilidade;
     }
 }
