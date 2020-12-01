@@ -1,14 +1,21 @@
+feign:
+  client:
+    config:
+      analiseDados:
+        readTimeout: 100
+        connectTimeout: 100
+
 spring:
   application:
     name: "CartaoCreditoProposta"
   datasource:
-    url: jdbc:postgresql://localhost:5432/keycloak
-    username: "keycloak"
-    password: "password"
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/keycloak}
+    username: ${DATABASE_USERNAME:keycloak}
+    password: ${DATABASE_URL:password}
     jpa:
-      show-sql: false
+      showSql: false
       properties:
         hibernate:
           dialect: org.hibernate.dialect.PostgreSQL9Dialect
       hibernate:
-        ddl-auto: update
+        ddlAuto: create-drop

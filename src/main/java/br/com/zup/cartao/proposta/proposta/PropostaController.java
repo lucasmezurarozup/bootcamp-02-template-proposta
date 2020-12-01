@@ -4,6 +4,8 @@ import br.com.zup.cartao.proposta.compartilhado.AnaliseDadosClient;
 import br.com.zup.cartao.proposta.compartilhado.NovaSolicitacaoAnaliseClienteRequest;
 import br.com.zup.cartao.proposta.compartilhado.ResultadoSolicitacaoAnaliseCliente;
 import feign.Feign;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,8 @@ public class PropostaController {
     @Autowired
     AnaliseDadosClient analiseCliente;
 
+    private final Logger logger = LoggerFactory.getLogger(PropostaController.class);
+
     @Autowired
     private PropostaRepository propostaRepository;
 
@@ -35,11 +39,15 @@ public class PropostaController {
 
         ResultadoSolicitacaoAnaliseCliente resultadoSolicitacaoAnaliseCliente = analiseCliente
                 .solicitacaoAnalise(
-                        new NovaSolicitacaoAnaliseClienteRequest(novaPropostaRequest.getDocumento(),
+                        new NovaSolicitacaoAnaliseClienteRequest(
+                                novaPropostaRequest.getDocumento(),
                                 novaPropostaRequest.getNome(),
-                                null));
+                                null)
+                        );
+
         PropostaSituacao elegibilidadeProposta =
                 verificaElegibilidade(resultadoSolicitacaoAnaliseCliente);
+
         Proposta proposta = propostaRepository.save(
                 novaPropostaRequest.toModel(elegibilidadeProposta));
 
@@ -47,6 +55,8 @@ public class PropostaController {
                 .path("/propostas/detalhes/{id}")
                 .buildAndExpand(proposta.getId())
                 .toUri();
+
+        logger.info("Proposta documento {} e salario {} registrada com sucesso!", proposta.getDocumento(), proposta.getSalario());
 
         return ResponseEntity.created(location).build();
     }
