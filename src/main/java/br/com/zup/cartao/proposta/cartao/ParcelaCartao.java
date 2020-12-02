@@ -21,5 +21,27 @@ public class ParcelaCartao {
     private ParcelaCartao() {
 
     }
+
+    public ParcelaCartao(String numeroParcela, BigDecimal quantidade, BigDecimal valor) {
+        this.numeroParcela = numeroParcela;
+        this.quantidade = quantidade;
+        this.valor = valor;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNumeroParcela() {
+        return numeroParcela;
+    }
+
+    public BigDecimal getQuantidade() {
+        return quantidade;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
 }
 

@@ -21,4 +21,31 @@ public class BloqueioCartao {
     private BloqueioCartao() {
 
     }
+
+    public BloqueioCartao( String numeroBloqueio, LocalDateTime bloqueadoEm, String sistemaResponsavel, boolean ativo) {
+        this.numeroBloqueio = numeroBloqueio;
+        this.bloqueadoEm = bloqueadoEm;
+        this.sistemaResponsavel = sistemaResponsavel;
+        this.ativo = ativo;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNumeroBloqueio() {
+        return numeroBloqueio;
+    }
+
+    public LocalDateTime getBloqueadoEm() {
+        return bloqueadoEm;
+    }
+
+    public String getSistemaResponsavel() {
+        return sistemaResponsavel;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
 }

@@ -1,5 +1,7 @@
 package br.com.zup.cartao.proposta.proposta;
 
+import br.com.zup.cartao.proposta.cartao.Cartao;
+
 import java.math.BigDecimal;
 
 public class AcompanhamentoPropostaResponse {
@@ -10,6 +12,7 @@ public class AcompanhamentoPropostaResponse {
     private BigDecimal salario;
     private PropostaElegibilidade propostaElegibilidade;
     private PropostaSituacao propostaSituacao;
+    private Cartao cartao;
 
     @Deprecated
     public AcompanhamentoPropostaResponse() {
@@ -24,6 +27,7 @@ public class AcompanhamentoPropostaResponse {
         this.salario = proposta.getSalario();
         this.propostaElegibilidade = proposta.getPropostaElegibilidade();
         this.propostaSituacao = proposta.getPropostaSituacao();
+        this.cartao = proposta.getCartao();
     }
 
     public String getDocumento() {
@@ -52,5 +56,9 @@ public class AcompanhamentoPropostaResponse {
 
     public PropostaSituacao getPropostaSituacao() {
         return propostaSituacao;
+    }
+
+    public Cartao getCartao() {
+        return cartao;
     }
 }

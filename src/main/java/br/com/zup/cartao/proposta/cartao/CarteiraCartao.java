@@ -22,4 +22,30 @@ public class CarteiraCartao {
 
     }
 
+    public CarteiraCartao(String numeroCarteira, String email, LocalDateTime associadaEm, String emissor) {
+        this.numeroCarteira = numeroCarteira;
+        this.email = email;
+        this.associadaEm = associadaEm;
+        this.emissor = emissor;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNumeroCarteira() {
+        return numeroCarteira;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public LocalDateTime getAssociadaEm() {
+        return associadaEm;
+    }
+
+    public String getEmissor() {
+        return emissor;
+    }
 }

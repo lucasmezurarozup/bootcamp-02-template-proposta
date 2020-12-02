@@ -47,9 +47,20 @@ public class Proposta {
     @Enumerated(EnumType.STRING)
     private PropostaSituacao propostaSituacao = PropostaSituacao.INICIADA;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Cartao cartao;
 
+    public Cartao getCartao() {
+        return cartao;
+    }
+
+    public void setCartao(Cartao cartao) {
+        this.cartao = cartao;
+    }
+
+    public void setPropostaSituacao(PropostaSituacao propostaSituacao) {
+        this.propostaSituacao = propostaSituacao;
+    }
 
     @Deprecated
     private Proposta() {

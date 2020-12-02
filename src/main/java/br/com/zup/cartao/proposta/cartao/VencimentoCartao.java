@@ -20,4 +20,26 @@ public class VencimentoCartao {
     private VencimentoCartao() {
 
     }
+
+    public VencimentoCartao(String numeroVencimento, int dia, LocalDateTime dataCriacao) {
+        this.numeroVencimento = numeroVencimento;
+        this.dia = dia;
+        this.dataCriacao = dataCriacao;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNumeroVencimento() {
+        return numeroVencimento;
+    }
+
+    public int getDia() {
+        return dia;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
 }

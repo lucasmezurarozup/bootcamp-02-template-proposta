@@ -1,4 +1,4 @@
-package br.com.zup.cartao.proposta.compartilhado;
+package br.com.zup.cartao.proposta.compartilhado.exceptions;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;

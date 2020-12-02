@@ -1,4 +1,4 @@
-package br.com.zup.cartao.proposta.compartilhado;
+package br.com.zup.cartao.proposta.compartilhado.exceptions;
 
 public class Erro {
     private String campo;

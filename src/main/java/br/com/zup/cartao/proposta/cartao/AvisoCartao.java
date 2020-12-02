@@ -23,4 +23,21 @@ public class AvisoCartao {
     private AvisoCartao() {
 
     }
+
+    public AvisoCartao(LocalDate validoAte, String destino) {
+        this.validoAte = validoAte;
+        this.destino = destino;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDate getValidoAte() {
+        return validoAte;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
 }

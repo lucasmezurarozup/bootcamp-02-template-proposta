@@ -23,4 +23,31 @@ public class RenegociacaoCartao {
     private RenegociacaoCartao() {
 
     }
+
+    public RenegociacaoCartao(String numeroRenegociacao, BigDecimal quantidade, BigDecimal valor, LocalDateTime dataCriacao) {
+        this.numeroRenegociacao = numeroRenegociacao;
+        this.quantidade = quantidade;
+        this.valor = valor;
+        this.dataCriacao = dataCriacao;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getNumeroRenegociacao() {
+        return numeroRenegociacao;
+    }
+
+    public BigDecimal getQuantidade() {
+        return quantidade;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
 }

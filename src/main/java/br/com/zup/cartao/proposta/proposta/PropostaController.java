@@ -1,13 +1,11 @@
 package br.com.zup.cartao.proposta.proposta;
 
-import br.com.zup.cartao.proposta.compartilhado.AnaliseDadosClient;
-import br.com.zup.cartao.proposta.compartilhado.NovaSolicitacaoAnaliseClienteRequest;
-import br.com.zup.cartao.proposta.compartilhado.ResultadoSolicitacaoAnaliseCliente;
-import feign.Feign;
+import br.com.zup.cartao.proposta.compartilhado.analiseFinanceira.AnaliseDadosClient;
+import br.com.zup.cartao.proposta.compartilhado.analiseFinanceira.NovaSolicitacaoAnaliseClienteRequest;
+import br.com.zup.cartao.proposta.compartilhado.analiseFinanceira.ResultadoSolicitacaoAnaliseCliente;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.openfeign.support.SpringMvcContract;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,6 +79,7 @@ public class PropostaController {
     @GetMapping("/acompanhamento/{id}")
     public ResponseEntity<?> detalhesProposta(@PathVariable("id") Long id) {
         Proposta proposta = this.propostaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "a proposta com o id "+ id+ " não foi localizada em nosso banco de dados."));
+        System.out.println(proposta.getCartao().getNumeroCartao());
         AcompanhamentoPropostaResponse acompanhamentoPropostaResponse = new AcompanhamentoPropostaResponse(proposta);
         return ResponseEntity.ok(acompanhamentoPropostaResponse);
     }

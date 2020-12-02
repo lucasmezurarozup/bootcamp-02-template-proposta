@@ -2,7 +2,7 @@ spring:
   application:
     name: "CartaoCreditoProposta"
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/keycloak}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5442/proposta}
     username: ${DATABASE_USERNAME:keycloak}
     password: ${DATABASE_URL:password}
     jpa:

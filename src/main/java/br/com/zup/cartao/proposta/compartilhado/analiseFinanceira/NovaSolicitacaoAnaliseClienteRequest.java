@@ -1,4 +1,4 @@
-package br.com.zup.cartao.proposta.compartilhado;
+package br.com.zup.cartao.proposta.compartilhado.analiseFinanceira;
 
 public class NovaSolicitacaoAnaliseClienteRequest {
     private String documento;
