@@ -17,8 +17,8 @@ feign:
   client:
     config:
       analiseDados:
-        readTimeout: 100
-        connectTimeout: 100
+        readTimeout: 1000
+        connectTimeout: 1000
 
 management:
   endpoint:

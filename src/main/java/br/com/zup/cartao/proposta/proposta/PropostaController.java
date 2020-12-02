@@ -8,10 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.support.SpringMvcContract;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -29,6 +32,12 @@ public class PropostaController {
 
     @Autowired
     private PropostaRepository propostaRepository;
+
+    @InitBinder
+    public void init(WebDataBinder webDataBinder) {
+        webDataBinder.addValidators(
+                new VerificaDocumentoValidator());
+    }
 
     @PostMapping("/nova")
     @Transactional
@@ -71,7 +80,7 @@ public class PropostaController {
 
     @GetMapping("/acompanhamento/{id}")
     public ResponseEntity<?> detalhesProposta(@PathVariable("id") Long id) {
-        Proposta proposta = this.propostaRepository.findById(id).orElseThrow();
+        Proposta proposta = this.propostaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "a proposta com o id "+ id+ " não foi localizada em nosso banco de dados."));
         AcompanhamentoPropostaResponse acompanhamentoPropostaResponse = new AcompanhamentoPropostaResponse(proposta);
         return ResponseEntity.ok(acompanhamentoPropostaResponse);
     }

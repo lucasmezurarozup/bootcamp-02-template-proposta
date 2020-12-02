@@ -1,5 +1,6 @@
 package br.com.zup.cartao.proposta.proposta;
 
+import br.com.zup.cartao.proposta.cartao.Cartao;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -45,6 +46,9 @@ public class Proposta {
 
     @Enumerated(EnumType.STRING)
     private PropostaSituacao propostaSituacao = PropostaSituacao.INICIADA;
+
+    @OneToOne
+    private Cartao cartao;
 
 
     @Deprecated
