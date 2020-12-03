@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 
-@FeignClient(name = "cartoes", url = "http://localhost:8888/api")
+@FeignClient(name = "cartoes", url = "${apis_externas.cartoes.url:http://localhost:8888/api}")
 public interface CartaoClient {
 
     @RequestLine("POST")

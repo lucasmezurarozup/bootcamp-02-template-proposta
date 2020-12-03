@@ -4,6 +4,8 @@ import br.com.zup.cartao.proposta.compartilhado.cartao.CartaoClient;
 import br.com.zup.cartao.proposta.compartilhado.cartao.ConsultaDisponibilidadeVinculacaoCartaoRequest;
 import br.com.zup.cartao.proposta.compartilhado.cartao.ResultadoConsultaCartaoResponse;
 import br.com.zup.cartao.proposta.proposta.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.HttpHeaders;
@@ -22,22 +24,23 @@ import java.util.stream.Collectors;
 @Component
 public class VinculacaoCartaoProposta {
 
+    private final Logger logger = LoggerFactory.getLogger(VinculacaoCartaoProposta.class);
+
     @Autowired
     private PropostaRepository propostaRepository;
 
     @Autowired
     private CartaoClient cartaoClient;
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 20000)
     @Transactional
     public void verificaVinculacaoCartaoAPropostasElegiveis() {
-        System.out.println("Iniciando...");
-
+        logger.info("iniciando checagem de novas propostas elegiveis...");
         List<Proposta> propostasDisponiveis = propostaRepository
                 .findByPropostaElegibilidadeAndCartao(PropostaElegibilidade.ELEGIVEL, null);
         propostasDisponiveis.stream()
                 .forEach(proposta -> {
-                    System.out.println(proposta.getDocumento() + " -> "+ LocalDateTime.now());
+                    logger.info("documento em processamento atualmente: "+proposta.getDocumento() + " -> "+ LocalDateTime.now());
 
                     ConsultaDisponibilidadeVinculacaoCartaoRequest consultaDisponibilidadeVinculacaoCartaoRequest =
                             new ConsultaDisponibilidadeVinculacaoCartaoRequest(proposta.getDocumento(), proposta.getNome(), proposta.getId().toString());
@@ -48,10 +51,13 @@ public class VinculacaoCartaoProposta {
                     ResultadoConsultaCartaoResponse resultadoConsultaCartaoResponse = retornoConsultaCartao(responseEntity);
 
                     if(resultadoConsultaCartaoResponse != null) {
+                        logger.info("há um cartão disponivel para vinculação...");
                         Cartao cartao = buildCartao(resultadoConsultaCartaoResponse);
                         proposta.setCartao(cartao);
                         proposta.setPropostaSituacao(PropostaSituacao.APROVADA);
+                        logger.info("cartão em etapa de vinculação com a proposta");
                         propostaRepository.save(proposta);
+                        logger.info("cartão vinculado com sucesso!");
                     }
                 });
     }
@@ -64,7 +70,7 @@ public class VinculacaoCartaoProposta {
 
             if(responseEntity.getHeaders().containsKey("Location")) {
                 HttpHeaders httpHeaders = responseEntity.getHeaders();
-
+                logger.info("cartão solicitado com sucesso!");
                 String location = httpHeaders.get("Location").get(0);
                 String id = location.substring(location.lastIndexOf("/") + 1);
 
@@ -89,26 +95,7 @@ public class VinculacaoCartaoProposta {
                 .buildRenegociacao(resultadoConsultaCartaoResponse.getRenegociacao())
                 .buildVencimento(resultadoConsultaCartaoResponse.getVencimento());
 
-
-        System.out.println("numeroCartao: "+ cartao.getNumeroCartao());
-        System.out.println("titular: "+ cartao.getTitular());
-        System.out.println("limite: "+ cartao.getLimite());
-        System.out.println("EmitidoEm: "+ cartao.getEmitidoEm());
-        System.out.println("idProposta: "+cartao.getIdProposta());
-        System.out.println("Bloqueios");
-        cartao.getBloqueios().stream().forEach(bloqueioCartao -> System.out.println(bloqueioCartao.getId() + " - "+ bloqueioCartao.getBloqueadoEm()+ " - "+ bloqueioCartao.getSistemaResponsavel() + " - "+ bloqueioCartao.isAtivo()));
-        System.out.println("Avisos");
-        cartao.getAvisos().stream().forEach(avisoCartao -> System.out.println( " - "+ avisoCartao.getValidoAte() + " - "+ avisoCartao.getDestino()));
-        System.out.println("Carteiras");
-        cartao.getCarteiras().stream().forEach(carteiraCartao -> System.out.println( " "+ carteiraCartao.getEmail()+ " "+ carteiraCartao.getAssociadaEm() + " "+ carteiraCartao.getEmissor()));
-        System.out.println("Parcelas");
-        cartao.getParcelas().stream().forEach(parcelaCartao -> System.out.println(parcelaCartao.getId() + " "+ parcelaCartao.getNumeroParcela() + " "+ parcelaCartao.getQuantidade() + " "+ parcelaCartao.getValor()));
-        System.out.println("Renegociacao");
-        if(cartao.getRenegociacao() != null) {
-            System.out.println(cartao.getRenegociacao().getNumeroRenegociacao() + " " + cartao.getRenegociacao().getQuantidade() + " " + cartao.getRenegociacao().getValor());
-        }
-        System.out.println("Vencimento");
-        System.out.println(cartao.getVencimento().getNumeroVencimento() + " " + cartao.getVencimento().getDia() + " "+ cartao.getVencimento().getDataCriacao());
         return cartao;
     }
+
 }

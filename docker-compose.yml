@@ -105,6 +105,26 @@ services:
       KAFKA_HOST: "kafka:29092"
       JAEGER_ENDPOINT: http://jaeger:14268/api/traces
 
+  spring:
+    image: lpmezuraro/proposta
+    command: mvn spring-boot:run
+    container_name: "aplicacao_proposta"
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres_proposta
+    environment:
+      APIS_EXTERNAS_ANALISEFINANCEIRA_URL: "http://analise:9999/api"
+      APIS_EXTERNAS_CARTOES_URL: "http://contas:8888/api"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/keycloak"
+      SPRING_DATASOURCE_USERNAME: "keycloak"
+      SPRING_DATASOURCE_PASSWORD: "password"
+      DATABASE_URL: "jdbc:postgresql://postgres:5432/keycloak"
+      LOG_LEVEL: INFO
+      KAFKA_HOST: "kafka:29092"
+      JAEGER_ENDPOINT: http://jaeger:14268/api/traces
+
+
   jaeger:
     image: jaegertracing/all-in-one
     ports:

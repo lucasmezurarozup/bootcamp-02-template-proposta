@@ -13,6 +13,12 @@ spring:
       hibernate:
         ddlAuto: create-drop
 
+apis_externas:
+  analisefinanceira:
+    url: ${APIS_EXTERNAS_ANALISEFINANCEIRA_URL:http://localhost:8888/api}
+  cartoes:
+    url: ${APIS_EXTERNAS_CARTOES_URL:http://localhost:8888/api}
+
 feign:
   client:
     config:
