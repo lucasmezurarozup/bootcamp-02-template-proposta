@@ -36,8 +36,10 @@ public class VinculacaoCartaoProposta {
     @Transactional
     public void verificaVinculacaoCartaoAPropostasElegiveis() {
         logger.info("iniciando checagem de novas propostas elegiveis...");
+
         List<Proposta> propostasDisponiveis = propostaRepository
                 .findByPropostaElegibilidadeAndCartao(PropostaElegibilidade.ELEGIVEL, null);
+
         propostasDisponiveis.stream()
                 .forEach(proposta -> {
                     logger.info("documento em processamento atualmente: "+proposta.getDocumento() + " -> "+ LocalDateTime.now());
