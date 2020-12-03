@@ -41,25 +41,36 @@ public class VinculacaoCartaoProposta {
         propostasDisponiveis.stream()
                 .forEach(proposta -> {
                     logger.info("documento em processamento atualmente: "+proposta.getDocumento() + " -> "+ LocalDateTime.now());
-
-                    ConsultaDisponibilidadeVinculacaoCartaoRequest consultaDisponibilidadeVinculacaoCartaoRequest =
-                            new ConsultaDisponibilidadeVinculacaoCartaoRequest(proposta.getDocumento(), proposta.getNome(), proposta.getId().toString());
-
-                    ResponseEntity responseEntity =
-                            cartaoClient.consultaDisponibilidade(consultaDisponibilidadeVinculacaoCartaoRequest);
-
-                    ResultadoConsultaCartaoResponse resultadoConsultaCartaoResponse = retornoConsultaCartao(responseEntity);
-
-                    if(resultadoConsultaCartaoResponse != null) {
-                        logger.info("há um cartão disponivel para vinculação...");
-                        Cartao cartao = buildCartao(resultadoConsultaCartaoResponse);
-                        proposta.setCartao(cartao);
-                        proposta.setPropostaSituacao(PropostaSituacao.APROVADA);
-                        logger.info("cartão em etapa de vinculação com a proposta");
-                        propostaRepository.save(proposta);
-                        logger.info("cartão vinculado com sucesso!");
-                    }
+                    realizaConsulta(proposta);
                 });
+    }
+
+    public void realizaConsulta(Proposta proposta) {
+        ConsultaDisponibilidadeVinculacaoCartaoRequest consultaDisponibilidadeVinculacaoCartaoRequest =
+                new ConsultaDisponibilidadeVinculacaoCartaoRequest(
+                        proposta.getDocumento(),
+                        proposta.getNome(),
+                        proposta.getId().toString()
+                );
+
+        ResponseEntity responseEntity =
+                cartaoClient.consultaDisponibilidade(consultaDisponibilidadeVinculacaoCartaoRequest);
+
+        ResultadoConsultaCartaoResponse resultadoConsultaCartaoResponse = retornoConsultaCartao(responseEntity);
+
+        if(resultadoConsultaCartaoResponse != null) {
+            realizaOperacaoVinculacao(resultadoConsultaCartaoResponse, proposta);
+        }
+    }
+
+    public void realizaOperacaoVinculacao(ResultadoConsultaCartaoResponse resultadoConsultaCartaoResponse, Proposta proposta) {
+        logger.info("há um cartão disponivel para vinculação...");
+        Cartao cartao = buildCartao(resultadoConsultaCartaoResponse);
+        proposta.setCartao(cartao);
+        proposta.setPropostaSituacao(PropostaSituacao.APROVADA);
+        logger.info("cartão em etapa de vinculação com a proposta");
+        propostaRepository.save(proposta);
+        logger.info("cartão vinculado com sucesso!");
     }
     
     public ResultadoConsultaCartaoResponse retornoConsultaCartao(ResponseEntity responseEntity) {
