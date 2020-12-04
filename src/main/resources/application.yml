@@ -1,3 +1,5 @@
+server:
+  port: 8085
 spring:
   application:
     name: "CartaoCreditoProposta"
@@ -15,7 +17,7 @@ spring:
 
 apis_externas:
   analisefinanceira:
-    url: ${APIS_EXTERNAS_ANALISEFINANCEIRA_URL:http://localhost:8888/api}
+    url: ${APIS_EXTERNAS_ANALISEFINANCEIRA_URL:http://localhost:9999/api}
   cartoes:
     url: ${APIS_EXTERNAS_CARTOES_URL:http://localhost:8888/api}
 

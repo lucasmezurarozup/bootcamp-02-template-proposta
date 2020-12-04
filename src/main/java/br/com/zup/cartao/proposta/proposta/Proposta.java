@@ -54,6 +54,8 @@ public class Proposta {
         return cartao;
     }
 
+
+
     public void setCartao(Cartao cartao) {
         this.cartao = cartao;
     }

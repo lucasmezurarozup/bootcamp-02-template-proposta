@@ -6,7 +6,7 @@ import javax.persistence.Query;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ExisteValidator implements ConstraintValidator<Existe, Long> {
+public class ExisteValidator implements ConstraintValidator<Existe, String> {
 
     @PersistenceContext
     EntityManager manager;
@@ -20,7 +20,7 @@ public class ExisteValidator implements ConstraintValidator<Existe, Long> {
     }
 
     @Override
-    public boolean isValid(Long id, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(String id, ConstraintValidatorContext constraintValidatorContext) {
 
         if(id == null) return true;
 

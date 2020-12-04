@@ -1,5 +1,6 @@
 package br.com.zup.cartao.proposta.cartao;
 
+import br.com.zup.cartao.proposta.biometria.Biometria;
 import br.com.zup.cartao.proposta.compartilhado.cartao.*;
 
 import javax.persistence.*;
@@ -57,9 +58,20 @@ public class Cartao {
     @NotNull(message = "idProposta não deve ser nulo")
     private Long idProposta;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Biometria> biometria;
+
+    public List<Biometria> getBiometria() {
+        return biometria;
+    }
+
     @Deprecated
     private Cartao() {
 
+    }
+
+    public void setBiometria(List<Biometria> biometria) {
+        this.biometria = biometria;
     }
 
     public Cartao(@NotNull String numeroCartao,

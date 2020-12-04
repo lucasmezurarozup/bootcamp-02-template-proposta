@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface PropostaRepository extends JpaRepository<Proposta, Long> {
     List<Proposta> findByPropostaElegibilidadeAndCartao(PropostaElegibilidade propostaElegibilidade, Cartao cartao);
+    Optional<Proposta> findByCartaoNumeroCartao(String numeroCartao);
 }
