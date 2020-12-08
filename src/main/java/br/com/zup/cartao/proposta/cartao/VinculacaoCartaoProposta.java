@@ -32,7 +32,7 @@ public class VinculacaoCartaoProposta {
     @Autowired
     private CartaoClient cartaoClient;
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 20000)
     @Transactional
     public void verificaVinculacaoCartaoAPropostasElegiveis() {
         logger.info("iniciando checagem de novas propostas elegiveis...");
