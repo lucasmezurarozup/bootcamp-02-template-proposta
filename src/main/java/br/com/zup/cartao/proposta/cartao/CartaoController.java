@@ -34,20 +34,24 @@ public class CartaoController {
     @Transactional
     public ResponseEntity<?> bloquearCartao(@Valid @PathVariable("numero") String numeroCartao, HttpServletRequest request) {
 
-        BloqueioCartaoResultadoResponse bloqueioCartaoResultadoResponse = cartaoClient.bloquearCartao(numeroCartao, new BloquearCartaoRequest(numeroCartao));
-        ResultadoConsultaCartaoResponse resultadoConsultaCartaoResponse = cartaoClient.informacoesCartao(numeroCartao);
+        BloqueioCartaoResultadoResponse bloqueioCartaoResultadoResponse =
+                cartaoClient.bloquearCartao(numeroCartao, new BloquearCartaoRequest(numeroCartao));
 
-        Cartao cartao = new Cartao(resultadoConsultaCartaoResponse.getId(),
-                resultadoConsultaCartaoResponse.getEmitidoEm(),
-                resultadoConsultaCartaoResponse.getTitular(),
-                resultadoConsultaCartaoResponse.getLimite(),
-                Long.valueOf(resultadoConsultaCartaoResponse.getIdProposta()))
-                .buildBloqueios(resultadoConsultaCartaoResponse.getBloqueios())
-                .buildVencimento(resultadoConsultaCartaoResponse.getVencimento())
-                .buildRenegociacao(resultadoConsultaCartaoResponse.getRenegociacao())
-                .buildParcelas(resultadoConsultaCartaoResponse.getParcelas())
-                .buildAvisos(resultadoConsultaCartaoResponse.getAvisos())
-                .buildCarteiras(resultadoConsultaCartaoResponse.getCarteiras());
+        ResultadoConsultaCartaoResponse resultadoConsultaCartaoResponse =
+                cartaoClient.informacoesCartao(numeroCartao);
+
+        Cartao cartao = buildCartao(resultadoConsultaCartaoResponse);
+
+        registraInformacoesCliente(request, numeroCartao);
+
+        Proposta proposta = propostaRepository.findByCartaoNumeroCartao(cartao.getNumeroCartao()).orElseThrow();
+        proposta.setCartao(cartao);
+        propostaRepository.save(proposta);
+
+        return ResponseEntity.ok(bloqueioCartaoResultadoResponse);
+    }
+
+    public void registraInformacoesCliente(HttpServletRequest request, String numeroCartao) {
 
         String ip = Optional.ofNullable(request.getHeader("X-FORWARED-FOR")).orElse(request.getRemoteAddr());
         if(ip.equals("0:0:0:0:0:0:0:1")) ip = "127.0.0.1";
@@ -59,12 +63,19 @@ public class CartaoController {
 
         solicitacaoClienteBloqueioRepository
                 .save(solicitacaoClienteBloqueio);
-
-        Proposta proposta = propostaRepository.findByCartaoNumeroCartao(cartao.getNumeroCartao()).orElseThrow();
-        proposta.setCartao(cartao);
-        propostaRepository.save(proposta);
-
-        return ResponseEntity.ok(bloqueioCartaoResultadoResponse);
     }
 
+    public Cartao buildCartao(ResultadoConsultaCartaoResponse resultadoConsultaCartaoResponse) {
+        return new Cartao(resultadoConsultaCartaoResponse.getId(),
+                resultadoConsultaCartaoResponse.getEmitidoEm(),
+                resultadoConsultaCartaoResponse.getTitular(),
+                resultadoConsultaCartaoResponse.getLimite(),
+                Long.valueOf(resultadoConsultaCartaoResponse.getIdProposta()))
+                .buildBloqueios(resultadoConsultaCartaoResponse.getBloqueios())
+                .buildVencimento(resultadoConsultaCartaoResponse.getVencimento())
+                .buildRenegociacao(resultadoConsultaCartaoResponse.getRenegociacao())
+                .buildParcelas(resultadoConsultaCartaoResponse.getParcelas())
+                .buildAvisos(resultadoConsultaCartaoResponse.getAvisos())
+                .buildCarteiras(resultadoConsultaCartaoResponse.getCarteiras());
+    }
 }
