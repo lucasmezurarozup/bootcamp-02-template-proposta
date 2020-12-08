@@ -12,7 +12,7 @@ public class AcompanhamentoPropostaResponse {
     private BigDecimal salario;
     private PropostaElegibilidade propostaElegibilidade;
     private PropostaSituacao propostaSituacao;
-    private Cartao cartao;
+    private AcompanhamentoPropostaCartaoVinculadoResponse cartao;
 
     @Deprecated
     public AcompanhamentoPropostaResponse() {
@@ -27,7 +27,15 @@ public class AcompanhamentoPropostaResponse {
         this.salario = proposta.getSalario();
         this.propostaElegibilidade = proposta.getPropostaElegibilidade();
         this.propostaSituacao = proposta.getPropostaSituacao();
-        this.cartao = proposta.getCartao();
+        this.cartao = verificaExistenciaCartao(proposta.getCartao());
+    }
+
+    private AcompanhamentoPropostaCartaoVinculadoResponse verificaExistenciaCartao(Cartao cartao) {
+        if(cartao != null) {
+            return new AcompanhamentoPropostaCartaoVinculadoResponse(cartao);
+        } else {
+           return new AcompanhamentoPropostaCartaoVinculadoResponse();
+        }
     }
 
     public String getDocumento() {
@@ -58,7 +66,7 @@ public class AcompanhamentoPropostaResponse {
         return propostaSituacao;
     }
 
-    public Cartao getCartao() {
+    public AcompanhamentoPropostaCartaoVinculadoResponse getCartao() {
         return cartao;
     }
 }

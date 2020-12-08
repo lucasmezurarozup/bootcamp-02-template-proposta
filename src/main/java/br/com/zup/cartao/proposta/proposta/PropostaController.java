@@ -79,7 +79,6 @@ public class PropostaController {
     @GetMapping("/acompanhamento/{id}")
     public ResponseEntity<?> detalhesProposta(@PathVariable("id") Long id) {
         Proposta proposta = this.propostaRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "a proposta com o id "+ id+ " não foi localizada em nosso banco de dados."));
-        System.out.println(proposta.getCartao().getNumeroCartao());
         AcompanhamentoPropostaResponse acompanhamentoPropostaResponse = new AcompanhamentoPropostaResponse(proposta);
         return ResponseEntity.ok(acompanhamentoPropostaResponse);
     }
