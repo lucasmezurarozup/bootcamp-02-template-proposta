@@ -2,6 +2,8 @@ package br.com.zup.cartao.proposta.compartilhado.cartao;
 
 import br.com.zup.cartao.proposta.avisos.SolicitacaoAvisoViagemRequest;
 import br.com.zup.cartao.proposta.avisos.SolicitacaoAvisoViagemResponse;
+import br.com.zup.cartao.proposta.carteiras.SolicitacaoVinculacaoCarteiraRequest;
+import br.com.zup.cartao.proposta.carteiras.SolicitacaoVinculacaoCarteiraResponse;
 import feign.RequestLine;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +29,9 @@ public interface CartaoClient {
     @RequestLine("POST")
     @RequestMapping(method = RequestMethod.POST, value = "/cartoes/{id}/avisos")
     public SolicitacaoAvisoViagemResponse avisoViagem(@PathVariable("id") String id, @RequestBody SolicitacaoAvisoViagemRequest solicitacaoAvisoViagemRequest);
+
+    @RequestLine("POST")
+    @RequestMapping(method = RequestMethod.POST, value = "/cartoes/{id}/carteiras")
+    public SolicitacaoVinculacaoCarteiraResponse vincularCarteiraDigital(@PathVariable("id") String id, @RequestBody SolicitacaoVinculacaoCarteiraRequest solicitacaoVinculacaoCarteiraRequest);
 
 }
