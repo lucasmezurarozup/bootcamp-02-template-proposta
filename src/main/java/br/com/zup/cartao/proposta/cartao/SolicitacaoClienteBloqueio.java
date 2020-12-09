@@ -1,5 +1,6 @@
 package br.com.zup.cartao.proposta.cartao;
 
+import com.sun.istack.NotNull;
 import org.bouncycastle.util.IPAddress;
 
 import javax.persistence.*;
@@ -15,9 +16,12 @@ public class SolicitacaoClienteBloqueio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String numeroCartao;
     private LocalDateTime solicitadoEm = LocalDateTime.now();
+    @NotNull
     private String ip;
+    @NotNull
     private String userAgent;
 
     private SolicitacaoClienteBloqueio() {

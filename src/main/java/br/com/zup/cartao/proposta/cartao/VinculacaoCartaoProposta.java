@@ -67,7 +67,7 @@ public class VinculacaoCartaoProposta {
 
     public void realizaOperacaoVinculacao(ResultadoConsultaCartaoResponse resultadoConsultaCartaoResponse, Proposta proposta) {
         logger.info("há um cartão disponivel para vinculação...");
-        Cartao cartao = buildCartao(resultadoConsultaCartaoResponse);
+        Cartao cartao = new CartaoBuilder().buildCartao(resultadoConsultaCartaoResponse);
         proposta.setCartao(cartao);
         proposta.setPropostaSituacao(PropostaSituacao.APROVADA);
         logger.info("cartão em etapa de vinculação com a proposta");
@@ -91,24 +91,6 @@ public class VinculacaoCartaoProposta {
             }
         }
         return resultadoConsultaCartaoResponse;
-    }
-
-    public Cartao buildCartao(ResultadoConsultaCartaoResponse resultadoConsultaCartaoResponse) {
-        Cartao cartao = new Cartao(
-                    resultadoConsultaCartaoResponse.getId(),
-                    resultadoConsultaCartaoResponse.getEmitidoEm(),
-                    resultadoConsultaCartaoResponse.getTitular(),
-                    resultadoConsultaCartaoResponse.getLimite(),
-                    Long.valueOf(resultadoConsultaCartaoResponse.getIdProposta())
-                )
-                .buildBloqueios(resultadoConsultaCartaoResponse.getBloqueios())
-                .buildAvisos(resultadoConsultaCartaoResponse.getAvisos())
-                .buildCarteiras(resultadoConsultaCartaoResponse.getCarteiras())
-                .buildParcelas(resultadoConsultaCartaoResponse.getParcelas())
-                .buildRenegociacao(resultadoConsultaCartaoResponse.getRenegociacao())
-                .buildVencimento(resultadoConsultaCartaoResponse.getVencimento());
-
-        return cartao;
     }
 
 }

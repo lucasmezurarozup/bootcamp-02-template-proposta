@@ -13,14 +13,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+
 
         http.authorizeRequests(authorizeRequests ->
                 authorizeRequests
-                        .antMatchers(HttpMethod.GET, "/api/propostas/**").hasAuthority("SCOPE_meu-primeiro-escopo")
-                        .antMatchers(HttpMethod.GET, "/api/cartoes/**").hasAuthority("SCOPE_meu-primeiro-escopo")
-                        .antMatchers(HttpMethod.POST, "/api/cartoes/**").hasAuthority("SCOPE_meu-primeiro-escopo")
-                        .antMatchers(HttpMethod.POST, "/api/propostas/**").hasAuthority("SCOPE_meu-primeiro-escopo")
+                        .antMatchers(HttpMethod.GET, "/propostas/**").hasAuthority("SCOPE_meu-primeiro-escopo")
+                        .antMatchers(HttpMethod.GET, "/cartoes/**").hasAuthority("SCOPE_meu-primeiro-escopo")
+                        .antMatchers(HttpMethod.POST, "/cartoes/**").hasAuthority("SCOPE_meu-primeiro-escopo")
+                        .antMatchers(HttpMethod.POST, "/propostas/**").hasAuthority("SCOPE_meu-primeiro-escopo")
+                        .antMatchers(HttpMethod.GET, "/biometrias/**").hasAuthority("SCOPE_meu-primeiro-escopo")
+                        .antMatchers(HttpMethod.POST, "/biometrias/**").hasAuthority("SCOPE_meu-primeiro-escopo")
+                        .antMatchers(HttpMethod.GET, "/avisos/**").hasAuthority("SCOPE_meu-primeiro-escopo")
+                        .antMatchers(HttpMethod.POST, "/avisos/**").hasAuthority("SCOPE_meu-primeiro-escopo")
+                        .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                         .anyRequest().authenticated()
         )
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);

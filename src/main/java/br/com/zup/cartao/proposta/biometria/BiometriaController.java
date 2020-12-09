@@ -20,7 +20,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping("/biometria")
+@RequestMapping("/biometrias")
 public class BiometriaController {
 
     @Autowired

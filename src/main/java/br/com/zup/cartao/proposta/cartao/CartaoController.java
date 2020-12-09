@@ -4,6 +4,7 @@ import br.com.zup.cartao.proposta.compartilhado.cartao.BloquearCartaoRequest;
 import br.com.zup.cartao.proposta.compartilhado.cartao.BloqueioCartaoResultadoResponse;
 import br.com.zup.cartao.proposta.compartilhado.cartao.CartaoClient;
 import br.com.zup.cartao.proposta.compartilhado.cartao.ResultadoConsultaCartaoResponse;
+import br.com.zup.cartao.proposta.compartilhado.utils.InformacoesEquipamentoUsuario;
 import br.com.zup.cartao.proposta.proposta.Proposta;
 import br.com.zup.cartao.proposta.proposta.PropostaRepository;
 import org.slf4j.Logger;
@@ -43,49 +44,37 @@ public class CartaoController {
         BloqueioCartaoResultadoResponse bloqueioCartaoResultadoResponse =
                 cartaoClient.bloquearCartao(numeroCartao, new BloquearCartaoRequest(numeroCartao));
 
-        ResultadoConsultaCartaoResponse resultadoConsultaCartaoResponse =
-                cartaoClient.informacoesCartao(numeroCartao);
+        Cartao cartao = retornaCartaoAssociadoAoNumero(numeroCartao);
 
-        Cartao cartao = buildCartao(resultadoConsultaCartaoResponse);
+        SolicitacaoClienteBloqueio solicitacaoClienteBloqueio =
+                new InformacoesEquipamentoUsuario()
+                        .registraInformacoesCliente(request, numeroCartao);
 
-        registraInformacoesCliente(request, numeroCartao);
+        solicitacaoClienteBloqueioRepository.save(solicitacaoClienteBloqueio);
 
-        Proposta proposta = propostaRepository.findByCartaoNumeroCartao(cartao.getNumeroCartao()).orElseThrow();
+        gravaVinculacaoBloqueioCartao(cartao);
+
+        return ResponseEntity.ok(bloqueioCartaoResultadoResponse);
+    }
+
+    public void gravaVinculacaoBloqueioCartao(Cartao cartao) {
+        Proposta proposta = propostaRepository
+                .findByCartaoNumeroCartao(cartao.getNumeroCartao())
+                .orElseThrow();
+
         proposta.setCartao(cartao);
         propostaRepository.save(proposta);
 
         logger.info("cartão bloqueado com sucesso!");
 
-        return ResponseEntity.ok(bloqueioCartaoResultadoResponse);
     }
 
-    public void registraInformacoesCliente(HttpServletRequest request, String numeroCartao) {
+    public Cartao retornaCartaoAssociadoAoNumero(String numeroCartao) {
+        ResultadoConsultaCartaoResponse resultadoConsultaCartaoResponse =
+                cartaoClient.informacoesCartao(numeroCartao);
 
-        String ip = Optional.ofNullable(request.getHeader("X-FORWARED-FOR")).orElse(request.getRemoteAddr());
-        if(ip.equals("0:0:0:0:0:0:0:1")) ip = "127.0.0.1";
+        return new CartaoBuilder()
+                .buildCartao(resultadoConsultaCartaoResponse);
 
-        SolicitacaoClienteBloqueio solicitacaoClienteBloqueio = new SolicitacaoClienteBloqueio(
-                numeroCartao,
-                ip,
-                request.getHeader("User-Agent"));
-
-        logger.info("gravando informações do requerente do bloqueio");
-
-        solicitacaoClienteBloqueioRepository
-                .save(solicitacaoClienteBloqueio);
-    }
-
-    public Cartao buildCartao(ResultadoConsultaCartaoResponse resultadoConsultaCartaoResponse) {
-        return new Cartao(resultadoConsultaCartaoResponse.getId(),
-                resultadoConsultaCartaoResponse.getEmitidoEm(),
-                resultadoConsultaCartaoResponse.getTitular(),
-                resultadoConsultaCartaoResponse.getLimite(),
-                Long.valueOf(resultadoConsultaCartaoResponse.getIdProposta()))
-                .buildBloqueios(resultadoConsultaCartaoResponse.getBloqueios())
-                .buildVencimento(resultadoConsultaCartaoResponse.getVencimento())
-                .buildRenegociacao(resultadoConsultaCartaoResponse.getRenegociacao())
-                .buildParcelas(resultadoConsultaCartaoResponse.getParcelas())
-                .buildAvisos(resultadoConsultaCartaoResponse.getAvisos())
-                .buildCarteiras(resultadoConsultaCartaoResponse.getCarteiras());
     }
 }
