@@ -3,6 +3,7 @@ package br.com.zup.cartao.proposta.carteiras;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(
@@ -21,14 +22,15 @@ public class CarteiraDigital {
     @Email
     private String email;
 
-    @NotBlank
-    private String carteira;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private TipoCarteira carteira;
 
     private CarteiraDigital() {
 
     }
 
-    public CarteiraDigital(@NotBlank @Email String email, @NotBlank String carteira, @NotBlank String numeroCartao) {
+    public CarteiraDigital(@NotBlank @Email String email, @NotBlank TipoCarteira carteira, @NotBlank String numeroCartao) {
         this.email = email;
         this.carteira = carteira;
         this.numeroCartao = numeroCartao;
@@ -38,7 +40,7 @@ public class CarteiraDigital {
         return email;
     }
 
-    public String getCarteira() {
+    public TipoCarteira getCarteira() {
         return carteira;
     }
 

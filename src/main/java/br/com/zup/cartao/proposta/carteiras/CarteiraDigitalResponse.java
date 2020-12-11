@@ -2,7 +2,7 @@ package br.com.zup.cartao.proposta.carteiras;
 
 public class CarteiraDigitalResponse {
     private String email;
-    private String carteira;
+    private TipoCarteira carteira;
     private String cartaoAssociado;
 
 
@@ -10,7 +10,7 @@ public class CarteiraDigitalResponse {
 
     }
 
-    public CarteiraDigitalResponse(String email, String carteira, String cartaoAssociado) {
+    public CarteiraDigitalResponse(String email, TipoCarteira carteira, String cartaoAssociado) {
         this.email = email;
         this.carteira = carteira;
         this.cartaoAssociado = cartaoAssociado;
@@ -20,7 +20,7 @@ public class CarteiraDigitalResponse {
         return email;
     }
 
-    public String getCarteira() {
+    public TipoCarteira getCarteira() {
         return carteira;
     }
 

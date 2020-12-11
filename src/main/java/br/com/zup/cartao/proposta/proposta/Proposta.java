@@ -1,6 +1,7 @@
 package br.com.zup.cartao.proposta.proposta;
 
 import br.com.zup.cartao.proposta.cartao.Cartao;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 
