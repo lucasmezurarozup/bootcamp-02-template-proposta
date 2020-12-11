@@ -2,6 +2,7 @@ package br.com.zup.cartao.proposta.cartao;
 
 import br.com.zup.cartao.proposta.biometria.Biometria;
 import br.com.zup.cartao.proposta.compartilhado.cartao.*;
+import br.com.zup.cartao.proposta.compartilhado.utils.CampoProtegido;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,6 +22,7 @@ public class Cartao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Convert(converter = CampoProtegido.class)
     @NotNull(message = "numeroCartao não deve ser nulo")
     private String numeroCartao;
 

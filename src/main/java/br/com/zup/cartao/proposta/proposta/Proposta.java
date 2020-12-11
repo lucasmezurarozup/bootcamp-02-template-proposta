@@ -1,9 +1,7 @@
 package br.com.zup.cartao.proposta.proposta;
 
 import br.com.zup.cartao.proposta.cartao.Cartao;
-import org.hibernate.annotations.ColumnTransformer;
-import org.hibernate.validator.constraints.br.CNPJ;
-import org.hibernate.validator.constraints.br.CPF;
+import br.com.zup.cartao.proposta.compartilhado.utils.CampoProtegido;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -25,6 +23,7 @@ public class Proposta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Convert(converter = CampoProtegido.class)
     @NotBlank(message = "documento é um campo de preenchimento obrigatório.")
     private String documento;
 
