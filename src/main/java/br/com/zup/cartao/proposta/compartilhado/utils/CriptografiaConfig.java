@@ -32,19 +32,7 @@ public class CriptografiaConfig {
         return new String(cipher.doFinal(Base64.getDecoder().decode(campoCriptado)));
     }
 
-    public static String getCodigoSeg() {
-        return codigoSeg;
-    }
-
-    public String getTipoAlgoritmo() {
-        return tipoAlgoritmo;
-    }
-
     public Cipher getCipher() {
         return cipher;
-    }
-
-    public Key getChave() {
-        return chave;
     }
 }
